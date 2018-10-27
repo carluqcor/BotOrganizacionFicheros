@@ -10,6 +10,8 @@ def es_usuario(id_usuario):
 
 def add_usuario(id_usuario):
     usuarios[str(id_usuario)] = []
+    with open('usuarios.json', 'w') as f:
+        json.dump(usuarios, f, indent=2)
 
 token = os.environ['TELEGRAM_TOKEN']
 
@@ -19,7 +21,7 @@ bot = telebot.TeleBot(token)
 def handle_start(m):
     cid = m.chat.id
     if not es_usuario(cid):
-        # add_usuario(cid)
+        add_usuario(cid)
         bot.send_message(cid, "Bienvenido al bot!")
     else:
         bot.send_message(cid, "Ya eres usuario")
