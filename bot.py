@@ -9,16 +9,20 @@ bot = telebot.TeleBot(environ['TELEGRAM_TOKEN'])
 
 userStep = {}
 
-def archivos_etiqueta(cid, etiqueta):
+def archivos_etiqueta(cid, etiqueta, todos=False):
   if not usuarios[str(cid)]:
     return None
   else:
     archivos = {}
     for x, y in usuarios[str(cid)].items():
-      if etiqueta in y['etiquetas']:
+      if not todos:
+        if etiqueta in y['etiquetas']:
+          archivos[x] = y
+      else:
         archivos[x] = y
     return archivos
 
+  
 def get_user_step(cid):
   return userStep.get(str(cid))
 
@@ -73,7 +77,10 @@ def inline_handler(q):
     uid = q.from_user.id
     etiqueta = q.query
     documentos = []
-    archivos = archivos_etiqueta(cid, etiqueta)
+    if etiqueta:
+      archivos = archivos_etiqueta(cid, etiqueta)
+    else:
+      archivos = archivos_etiqueta(cid, '', True)
     var = 1
     if archivos:
       for x,y in archivos.items():
@@ -88,7 +95,7 @@ def handle_start(m):
   cid = m.chat.id
   if not es_usuario(cid):
     add_usuario(cid)
-    bot.send_message(cid, "¡Bienvenido al bot!\n\nUtiliza /help para aprender a utilizar el bot :)")
+    bot.send_message(cid, "Bienvenido al bot!")
   else:
     bot.send_message(cid, "Ya eres usuario")
 
@@ -161,6 +168,5 @@ def tags_handler(m):
 def help_handle(m):
   cid = m.chat.id
   bot.send_message(cid, "/start Iniciar bot\n/stop Parar bot\n\nEnvía un archivo para guardarlo, posteriormente responde al archivo con una #etiqueta para asignársela. Una vez guardados tus archivos, utilza el bot en cualquier chat de la siguiente manera:\n`@asl_pokebot #etiqueta`\n\nPuedes borrar archivos con /del\_file y borrar etiquetas respondiendo a un archivo con /del\_tag #etiqueta", parse_mode="Markdown")
-  
 
 bot.polling(True)
