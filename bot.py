@@ -1,5 +1,10 @@
 import telebot
 import json
+import os
+
+token = os.environ['TELEGRAM_TOKEN']
+bot = telebot.TeleBot(token)
+
 
 with open('usuarios.json') as f:
     usuarios = json.load(f)
@@ -12,9 +17,9 @@ def add_usuario(id_usuario):
     with open('usuarios.json', "w") as f:
         json.dump(usuarios, f, indent=2)
 
-token = '669166473:AAGRjddRvsm23At_fTRKNdhv4y2wFCthjdU'
+# token = '669166473:AAGRjddRvsm23At_fTRKNdhv4y2wFCthjdU'
 
-bot = telebot.TeleBot(token)
+
 
 @bot.message_handler(commands = ['start'])
 def handle_start(m):
