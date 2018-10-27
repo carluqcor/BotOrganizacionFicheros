@@ -1,4 +1,3 @@
-
 import telebot
 from telebot import types
 from os import environ
@@ -89,7 +88,7 @@ def handle_start(m):
   cid = m.chat.id
   if not es_usuario(cid):
     add_usuario(cid)
-    bot.send_message(cid, "Bienvenido al bot!")
+    bot.send_message(cid, "¡Bienvenido al bot!\n\nUtiliza /help para aprender a utilizar el bot :)")
   else:
     bot.send_message(cid, "Ya eres usuario")
 
@@ -161,7 +160,7 @@ def tags_handler(m):
 @bot.message_handler(commands=['help'])
 def help_handle(m):
   cid = m.chat.id
-  bot.send_message(cid, "/start-Inicia el bot\n /stop-Para el bot\n Archivos: \n El bot guarda los archivos que recibe automaticamente\n /del_file-Muestra los archivos del usuario para que sean seleccionados\n /del_tag-Elimina la etiqueta asignada al archivo, esta debe empezar por #")
+  bot.send_message(cid, "/start Iniciar bot\n/stop Parar bot\n\nEnvía un archivo para guardarlo, posteriormente responde al archivo con una #etiqueta para asignársela. Una vez guardados tus archivos, utilza el bot en cualquier chat de la siguiente manera:\n`@asl_pokebot #etiqueta`\n\nPuedes borrar archivos con /del\_file y borrar etiquetas respondiendo a un archivo con /del\_tag #etiqueta", parse_mode="Markdown")
   
 
 bot.polling(True)
